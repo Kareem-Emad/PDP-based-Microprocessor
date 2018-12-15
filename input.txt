@@ -1,6 +1,6 @@
 ; comments starts with a semi colon
 ;this code doesn’t do anything significant, it is just an example
-
+mov r1 ,r2
 MOV N, R0				; R0 = 7           	address 0
 XNOR R1, R1				; R1 = 0           	address 2
 MOV #20, R3				; R3 = 20         	address 3

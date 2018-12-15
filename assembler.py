@@ -105,6 +105,33 @@ def process_instruction(instruction,variables,labels,instruction_number):
         decoded = instruction.split(' ')[0]
         word_first_operand = ""
         word_second_operand = ""
+
+
+
+        if(decode_operand(operands[1])!= -1 ):
+            decoded_2nd = decode_operand(operands[1])
+            if(len(decoded_2nd) == 3 ):
+                #print(variables[decoded_2nd[2]])
+                word_second_operand = variables[decoded_2nd[2]]
+            #print(decoded_2nd[1])
+            decoded = decoded +decoded_2nd[1]
+        else:
+            #if it's addressing a variable
+            if(operands[1] in variables):
+                #place x(r7)+ code instead
+                #print(instruction.split(' ')[0]+"111001")
+                decoded = decoded + "111011"
+
+                #place address of var in next mem location
+                #print( "{0:b}".format(variables[ operands[1]  ] ))
+                #add symbol to replace later
+                word_second_operand = operands[1]
+            else:
+                #first operand cannot be immediate
+                print("invalid ya 3m :v")
+
+
+
         if(decode_operand(operands[0])!= -1 ):
             decoded_1st = decode_operand(operands[0])
             if(len(decoded_1st) == 3 ):
@@ -135,27 +162,6 @@ def process_instruction(instruction,variables,labels,instruction_number):
 
 
 
-        if(decode_operand(operands[1])!= -1 ):
-            decoded_2nd = decode_operand(operands[1])
-            if(len(decoded_2nd) == 3 ):
-                #print(variables[decoded_2nd[2]])
-                word_second_operand = variables[decoded_2nd[2]]
-            #print(decoded_2nd[1])
-            decoded = decoded +decoded_2nd[1]
-        else:
-            #if it's addressing a variable
-            if(operands[1] in variables):
-                #place x(r7)+ code instead
-                #print(instruction.split(' ')[0]+"111001")
-                decoded = decoded + "111011"
-
-                #place address of var in next mem location
-                #print( "{0:b}".format(variables[ operands[1]  ] ))
-                #add symbol to replace later
-                word_second_operand = operands[1]
-            else:
-                #first operand cannot be immediate
-                print("invalid ya 3m :v")
 
         decoded_instructions.append(decoded)
         if(word_first_operand != ""):
@@ -168,14 +174,14 @@ def process_instruction(instruction,variables,labels,instruction_number):
     if(op_typ == 1):
         if(decode_operand( instruction.split(' ')[1])!= -1 ):
             #print(decode_operand( instruction.split(' ')[1])[1])
-            decoded_instructions.append(instruction.split(' ')[0]+decode_operand( instruction.split(' ')[1])[1] + "00000")
+            decoded_instructions.append(instruction.split(' ')[0]+  "00000" + decode_operand( instruction.split(' ')[1])[1] )
             return
 
         #if it's addressing a variable
         if(instruction.split(' ')[1] in variables):
             #place x(r7)+ code instead
             #print(instruction.split(' ')[0]+"111001")
-            decoded_instructions.append(instruction.split(' ')[0]+"111011"+"00000")
+            decoded_instructions.append(instruction.split(' ')[0]+ "00000"  + "111011")
             #place address of var in next mem location
             #print( "{0:b}".format(variables[instruction.split(' ')[1]]) )
             #add variable symbol to replace later
@@ -257,7 +263,7 @@ def decode(contents):
     print(var_hash)
     for i in range(len(decoded_instructions)):
         for va in var_hash:
-            decoded_instructions[i] = decoded_instructions[i].replace(va,"{0:016b}".format((var_hash[va])))
+            decoded_instructions[i] = decoded_instructions[i].replace(va,"{0:016b}".format((var_hash[va]-2)))
         if(len(decoded_instructions[i].split(":"))==3):
             label = labels_hash[ decoded_instructions[i].split(':')[1] ]
             label = int(label)
