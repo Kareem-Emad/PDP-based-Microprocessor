@@ -41,7 +41,7 @@ end component;
 component Ram is
     generic (
         n_reg_bits : integer := 16;
-        n_address : integer := 6
+        n_address : integer := 8
     );
     port (
         clk: in std_logic;
@@ -57,6 +57,8 @@ signal mdr_d : std_logic_vector(n-1 downto 0);
 signal mar_q : std_logic_vector(n-1 downto 0);
 signal mar_d : std_logic_vector(n-1 downto 0);
 signal ram_out : std_logic_vector(n-1 downto 0);
+signal ram_address : std_logic_vector(n_address-1 downto 0);
+signal ram_word_to_write : std_logic_vector(n-1 downto 0);
 signal mdr_in_select : std_logic;
 signal mar_in_select : std_logic;
 signal ram_clk : std_logic;
@@ -85,8 +87,14 @@ begin
 
     ram_def: ram generic map(n, n_address)
     port map (
-        ram_clk, mem_write, mar_q(n_address-1 downto 0), mdr_q, ram_out
+        ram_clk, mem_write, ram_address, ram_word_to_write, ram_out
     );
-
+    ram_address <=  mar_q(n_address-1 downto 0) when 
+                    mar_in_select_a = '0' and mar_in_select_b = '0'
+                    else bus_a(n_address-1 downto 0) when mar_in_select_a = '1'
+                    else bus_b(n_address-1 downto 0) when mar_in_select_b = '1';
+    ram_word_to_write <=  mdr_q when mdr_in_select_b = '0'
+                          else bus_b when mdr_in_select_b = '1';
+    
     ram_clk <= not(clk);
 end MemoryUnit_arch;
