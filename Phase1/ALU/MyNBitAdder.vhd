@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity MyNBitAdder IS
+entity MyNBitAdder is
     generic(n : integer := 16);
 	port(
 		x : in std_logic_vector(n-1 downto 0);
@@ -10,9 +10,9 @@ entity MyNBitAdder IS
 		z : out std_logic_vector(n-1 downto 0);
 		cout : out std_logic
 	);
-END MyNBitAdder;
+end MyNBitAdder;
 
-architecture MyNBitAdder_arch OF MyNBitAdder IS
+architecture MyNBitAdder_arch of MyNBitAdder is
 component MyAdder is
 	port(
         a, b, cin : in std_logic;

@@ -11,7 +11,7 @@ entity MemoryUnit is
         mem_read : in std_logic := '0';
         mem_write : in std_logic := '0';
         bus_a : inout std_logic_vector(n - 1 downto 0) := (others => '0');
-        bus_b : inout std_logic_vector(n - 1 downto 0) := (others => '0');
+        bus_b : in std_logic_vector(n - 1 downto 0) := (others => '0');
         mar_in_select_a : in std_logic := '0';
         mar_in_select_b : in std_logic := '0';
         mdr_out_select_a : in std_logic := '0';

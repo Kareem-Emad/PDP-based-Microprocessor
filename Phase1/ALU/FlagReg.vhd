@@ -18,7 +18,7 @@ entity FlagReg is
 end FlagReg;
 
 architecture FlagReg_arch of FlagReg is
-component MyRegister is
+component MyLevelRegister is
     generic(n : integer := 5);
     port(
         d : in std_logic_vector(n-1 downto 0) := (others => '0');
@@ -34,7 +34,7 @@ signal is_add : std_logic := '0';
 signal is_sub : std_logic := '0';
 constant zeros : std_logic_vector(n-1 downto 0) := (others => '0');
 begin
-    reg_define: MyRegister generic map(n)
+    reg_define: MyLevelRegister generic map(n)
         port map(reg_d, reg_q, update_flag, clk, rst);
     
     is_add_sub <= '1' when s(2) = '0' and s(3) = '0' else '0';

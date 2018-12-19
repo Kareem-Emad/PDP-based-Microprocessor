@@ -24,5 +24,3 @@ run
 force myregister/rst 0
 run
 run
-
-

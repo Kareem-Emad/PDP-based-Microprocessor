@@ -10,7 +10,8 @@ entity ALUWithRegs is
         -- second operand, output and selection lines
 		b : in std_logic_vector (n-1 downto 0) := (others => '0');
         s : in std_logic_vector(3 downto 0) := (others => '0');
-        
+        use_carry : in std_logic;
+
         -- x register related
         x_in_bus : in std_logic_vector(n-1 downto 0) := (others => '0');
         x_in_select : in std_logic := '0';
@@ -55,6 +56,15 @@ component MyRegister is
     );
 end component;
 
+component MyLevelRegister is
+    generic(n : integer := 16);
+    port(
+        d : in std_logic_vector(n-1 downto 0) := (others => '0');
+        q : out std_logic_vector(n-1 downto 0) := (others => '0');
+        ld, clk, rst : in std_logic := '0'
+    );
+end component;
+
 component Tristate is
     generic(n : integer := 16);
     port(
@@ -91,19 +101,22 @@ signal x_q : std_logic_vector(n-1 downto 0) := (others => '0');
 signal z_d : std_logic_vector(n-1 downto 0) := (others => '0');
 signal z_q : std_logic_vector(n-1 downto 0) := (others => '0');
 
+signal c_flag_tmp : std_logic := '0';
 begin
     alu_define: ALU generic map(n)
     port map(
         alu_a, b, alu_f, s, alu_cin, alu_cout
     );
     alu_a <= x_q;
+    alu_cin <= c_flag_tmp and use_carry;
 
     flag_reg_define: FlagReg generic map(n)
     port map(
         clk, rst,
         alu_a_msb, alu_b_msb, alu_cout, alu_f, s,
-        c_flag, n_flag, z_flag, p_flag, o_flag, update_flag
+        c_flag_tmp, n_flag, z_flag, p_flag, o_flag, update_flag
     );
+    c_flag <= c_flag_tmp;
     alu_a_msb <= alu_a(n-1);
     alu_b_msb <= b(n-1);
  
@@ -113,7 +126,7 @@ begin
     );
     x_d <= x_in_bus;
 
-    reg_z_define: MyRegister generic map(n)
+    reg_z_define: MyLevelRegister generic map(n)
     port map(
         z_d, z_q, z_in_select, clk, rst
     );
@@ -128,7 +141,5 @@ begin
     port map(
         z_q, z_out_bus, z_out_select
     );
-
-
 
 end ALUWithRegs_arch;
