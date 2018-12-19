@@ -1,0 +1,6 @@
+5
+4 RiOut2 Xin2 ALUopi Zin
+5 Zout2 MARin2 Read Riin2 WMFC
+4 MDRout1 MARin1 Read WMFC
+4 MDRout1 Yout2 Xin2 ALUop
+4 ALUout2 MDRin2 Write WMFC

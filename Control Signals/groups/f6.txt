@@ -1,0 +1,10 @@
+9
+RiOut2 0000
+PCout2 0001
+Yout2 0010
+IRout2 0011
+ALUout2 0100
+Zout2 0101
+RegiOut1 0110
+Riin2 0111
+NOAction 1000

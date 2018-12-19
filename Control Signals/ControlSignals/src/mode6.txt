@@ -1,0 +1,6 @@
+5
+4 Pcout2 MARin2 Read WMFC
+6 Pcin1 MDRout1 RiOut2 Xin2 ALUopi Zin
+4 Zout2 MARin2 Read WMFC
+4 MDRout1 MARin1 Read WMFC
+2 MDRout1 Yin1

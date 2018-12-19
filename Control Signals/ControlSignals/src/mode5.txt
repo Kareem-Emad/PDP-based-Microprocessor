@@ -1,0 +1,3 @@
+2
+4 RiOut2 MARin2 Read WMFC
+2 MDRout1 Yin1

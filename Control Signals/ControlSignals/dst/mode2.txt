@@ -1,0 +1,3 @@
+2
+4 RiOut1 Yout2 Xin2 ALUop 
+2 ALUout2 Riin2

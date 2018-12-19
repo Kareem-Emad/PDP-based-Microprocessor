@@ -1,0 +1,5 @@
+4
+MARin1 00
+MARin2 01
+PCin1 10
+NOAction 11

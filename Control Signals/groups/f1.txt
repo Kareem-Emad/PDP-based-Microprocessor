@@ -1,0 +1,5 @@
+4
+ALUop 00
+Yin1 01
+NOAction 10
+ALUopi 11
