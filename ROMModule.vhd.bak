@@ -33,7 +33,7 @@ architecture ROMModuleWorkFlow of ROMModule is
 		);
 	end component;
 
-	signal mPC           : std_logic_vector(6 downto 0) := "0000001";
+	signal mPC           : std_logic_vector(6 downto 0) := "";
 	signal ROMout        : std_logic_vector(16 downto 0);
 	signal PLAOut        : std_logic_vector(6 downto 0);
 	signal IncrementedmPC: std_logic_vector(6 downto 0);

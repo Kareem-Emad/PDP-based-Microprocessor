@@ -1,0 +1,78 @@
+{C:/Users/hp/Desktop/New folder/MPCIncrementor.vhd} {1 {vcom -work work -2002 -explicit -stats=none {C:\Users\hp\Desktop\New folder\MPCIncrementor.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity mPCInrementor
+-- Compiling architecture mPCInrementorWorkFlow of mPCInrementor
+
+} {} {}} {C:/Users/hp/Desktop/New folder/ROM.vhd} {1 {vcom -work work -2002 -explicit -stats=none {C:/Users/hp/Desktop/New folder/ROM.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity ROM
+-- Compiling architecture ROMWorkFlow of ROM
+
+} {} {}} C:/Users/hp/Desktop/RegOPCode.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/hp/Desktop/RegOPCode.vhd
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity RegOPCode
+-- Compiling architecture RegOPCodeWorkFlow of RegOPCode
+
+} {} {}} {C:/Users/hp/Desktop/New folder/ROMDecoder.vhd} {1 {vcom -work work -2002 -explicit -stats=none {C:\Users\hp\Desktop\New folder\ROMDecoder.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity ROMDecoder
+-- Compiling architecture ROMDecoderWorkFlow of ROMDecoder
+
+} {} {}} {C:/Users/hp/Desktop/New folder/ROMModule.vhd} {1 {vcom -work work -2002 -explicit -stats=none {C:/Users/hp/Desktop/New folder/ROMModule.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity ROMModule
+-- Compiling architecture ROMModuleWorkFlow of ROMModule
+
+} {} {}} {C:/Users/hp/Desktop/New folder/interalALUOP.vhd} {1 {vcom -work work -2002 -explicit -stats=none {C:/Users/hp/Desktop/New folder/interalALUOP.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity internalALUOP
+-- Compiling architecture internalALUOPWorkFlow of internalALUOP
+
+} {} {}} C:/Users/hp/Desktop/ALUOP.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/hp/Desktop/ALUOP.vhd
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity ALUOP
+-- Compiling architecture ALUOPWorkFlow of ALUOP
+
+} {} {}} {C:/Users/hp/Desktop/New folder/ControlUnit.vhd} {1 {vcom -work work -2002 -explicit -stats=none {C:/Users/hp/Desktop/New folder/ControlUnit.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity ControlUnit
+-- Compiling architecture ControlUnitWorkFlow of ControlUnit
+
+} {} {}} {C:/Users/hp/Desktop/New folder/pla.vhd} {1 {vcom -work work -2002 -explicit -stats=none {C:\Users\hp\Desktop\New folder\pla.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity PLA
+-- Compiling architecture PLAWorkFlow of PLA
+
+} {} {}}

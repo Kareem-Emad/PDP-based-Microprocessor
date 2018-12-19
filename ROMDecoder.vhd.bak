@@ -1,0 +1,276 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity ROMDecoder is
+    generic(
+        n:integer:=16;
+        n_registers : integer := 6;
+        memory_address_size : integer := 16
+    );
+	port(
+		    microinst: in std_logic_vector(16 downto 0);
+            IR       : in std_logic_vector(15 downto 0);
+            regNum   : in std_logic;
+
+		    --- General purpose registers control signals & possibly SP
+        	reg_in_select_B  : out std_logic_vector(n_registers - 1 downto 0) := (others => '0');
+        	reg_out_select_A : out std_logic_vector(n_registers - 1 downto 0) := (others => '0');
+        	reg_out_select_B : out std_logic_vector(n_registers - 1 downto 0) := (others => '0');  
+        	
+        	--- PC related
+        	pc_inc : out std_logic := '0';
+        	pc_out : out std_logic := '0';
+            pc_rst : out std_logic := '0';
+
+        	--- ALU related
+        	alu_out : out std_logic := '0';
+            alu_select : out std_logic_vector(4 downto 0) := (others => '0');
+            alu_select_i : out std_logic := '0'; 
+        	y_in, y_out : out std_logic := '0';
+        	ir_in, ir_out : out std_logic := '0';
+        	x_in : out std_logic := '0';
+        	z_out, z_in : out std_logic := '0';
+
+            --- Memory related
+            mem_read, mem_write : out std_logic := '0';
+            mar_in_select_A : out std_logic := '0';
+            mar_in_select_B : out std_logic := '0';
+            mdr_out_select : out std_logic := '0';
+            mdr_in_select : out std_logic := '0';
+
+            --- Tristate 
+            grp1 : out std_logic_vector(2 downto 0);
+            grp2 : out std_logic_vector(1 downto 0);
+            grp3 : out std_logic;
+            grp4 : out std_logic;
+            grp5 : out std_logic;
+            grp6 : out std_logic_vector(7 downto 0);
+            grp7 : out std_logic_vector(1 downto 0);
+            grp8 : out std_logic_vector(2 downto 0);
+            grp9 : out std_logic_vector(1 downto 0)
+	);
+end entity;
+
+architecture ROMDecoderWorkFlow of ROMDecoder is 
+
+    component ALUOP
+        port(
+            IR    : in std_logic_vector(15 downto 0);
+            opcode: out std_logic_vector(4 downto 0)
+        );
+    end component;
+
+    component RegOPCode
+        port(
+            IR : in std_logic_vector(15 downto 0);
+            RegNum: in std_logic;
+            opcode: out std_logic_vector(5 downto 0)
+        );
+    end component;
+
+    component internalALUOP 
+	port(
+        	IR    : in std_logic_vector(15 downto 0);
+        	RegNum: in std_logic;
+        	opcode: out std_logic
+    	);
+    end component;
+ 
+signal alu_opcode : std_logic_vector(4 downto 0);
+signal reg_opcode : std_logic_vector(5 downto 0);
+signal ialu_opcode: std_logic;
+begin
+	rop : RegOPCode port map(IR,RegNum,reg_opcode);
+	alop: ALUOP port map(IR,alu_opcode);
+	ialop: internalALUOP port map(IR, RegNum, ialu_opcode);
+
+    process (microinst, IR, reg_opcode, alu_opcode, regNum, ialu_opcode)
+    begin 
+	--Reset all control signals
+	--- General purpose registers control signals & possibly SP
+        		reg_in_select_B  <= (others => '0');
+        		reg_out_select_A <= (others => '0');
+        		reg_out_select_B <= (others => '0');  
+        	
+        		--- PC related
+        		pc_inc <= '0';
+        		pc_out <= '0';
+            		pc_rst <= '0';
+
+        		--- ALU related
+        		alu_out <= '0';
+            		alu_select <= (others => '0');
+            		alu_select_i <= '0'; 
+        		y_in <= '0';
+			y_out <= '0';
+        		ir_in <= '0';
+			ir_out <= '0';
+        		x_in <= '0';
+        		z_out <= '0';
+			z_in <= '0';
+
+            		--- Memory related
+            		mem_read <= '0';
+		 	mem_write <= '0';
+            		mar_in_select_A <= '0';
+            		mar_in_select_B <= '0';
+            		mdr_out_select <= '0';
+            		mdr_in_select <= '0';
+
+            		--- Tristate 
+            		grp1 <= (others => '0');
+            		grp2 <= (others => '0');
+            		grp3 <= '0';
+            		grp4 : out std_logic;
+            		grp5 : out std_logic;
+            		grp6 <= (others => '0');
+            		grp7 <= (others => '0');
+            		grp8 <= (others => '0');
+            		grp9 <= (others => '0');
+
+        -- Group 1
+        if(microinst(16 downto 15) = "00") then   
+            grp1 <= "001";
+            alu_select <= alu_opcode;
+        end if;
+
+        if(microinst(16 downto 15) = "01") then    
+            grp1 <= "010";
+            y_in <= '1';
+        end if;
+        if(microinst(16 downto 15) = "10") then    
+            grp1 <= "000";
+        end if;
+        if(microinst(16 downto 15) = "11") then 
+            alu_select_i <= ialu_opcode;   
+            grp1 <= "100";
+        end if;
+
+        -- Group 2
+        if(microinst(14 downto 13) = "00") then   
+            grp2 <= "01";
+            x_in <= '1';
+        end if;
+        if(microinst(14 downto 13) = "01") then    
+            grp2 <= "10";
+            pc_rst <= '1';
+        end if;
+        if(microinst(14 downto 13) = "10") then   
+            grp2 <= "00";
+        end if;
+
+        -- Group 3
+        if(microinst(12) = '0') then   
+            grp3 <= '1';
+            ir_in <= '1';
+        end if;
+        if(microinst(12) = '1') then    
+            grp3 <= '0';
+        end if;
+
+        
+        -- Group 4
+        if(microinst(11) = '0') then   
+            grp4 <= '1';
+        end if;
+        if(microinst(11) = '1') then    
+            grp4 <= '0';
+        end if;
+
+       
+        -- Group 5
+        if(microinst(10) = '0') then   
+            grp5 <= '1';
+            z_in <= '1';
+        end if;
+        if(microinst(10) = '1') then    
+            grp5 <= '0';
+        end if;
+
+
+       -- Group 6
+        if(microinst(9 downto 6) = "0000") then   
+	    reg_out_select_B <= reg_opcode;
+            grp6 <= "00000001";
+        end if;
+        if(microinst(9 downto 6) = "0001") then   
+            grp6 <= "00000010";
+            pc_out <= '1';
+        end if;
+        if(microinst(9 downto 6) = "0010") then   
+            grp6 <= "00000100";
+            y_in <= '1';
+        end if;
+        if(microinst(9 downto 6) = "0011") then   
+            grp6 <= "00001000";
+            ir_out <= '1';
+        end if;
+        if(microinst(9 downto 6) = "0100") then   
+            grp6 <= "00010000";
+            alu_out <= '1';
+        end if;
+        if(microinst(9 downto 6) = "0101") then   
+            grp6 <= "00100000";
+            z_out <= '1';
+        end if;
+        if(microinst(9 downto 6) = "0110") then   
+            grp6 <= "01000000";
+	    reg_out_select_A <= reg_opcode;
+        end if;
+        if(microinst(9 downto 6) = "0111") then   
+            grp6 <= "10000000";
+            reg_in_select_B <= reg_opcode;
+        end if;
+
+        if(microinst(9 downto 6) = "1000" or microinst(10 downto 7) = "1001" or microinst(10 downto 7) = "1010" ) then   
+            grp6 <= "00000000";
+        end if;
+
+        -- Group 7
+        if(microinst(5 downto 4) = "00") then   
+            grp7 <= "01";
+            mdr_out_select <= '1';
+        end if;
+        if(microinst(5 downto 4) = "01") then    
+            grp7 <= "10";
+            mdr_in_select <= '1';
+        end if;
+        if(microinst(5 downto 4) = "10") then    
+            grp7 <= "00";
+        end if;
+
+
+        -- Group 8
+        if(microinst(3 downto 2) = "00") then   
+            grp8 <= "001";
+            mar_in_select_A <= '1';
+        end if;
+        if(microinst(3 downto 2) = "01") then    
+            grp8 <= "010";
+            mar_in_select_B <= '1';
+        end if;
+        if(microinst(3 downto 2) = "10") then    
+            grp8 <= "100";
+            pc_inc <= '1';
+        end if;
+        if(microinst(3 downto 2) = "11") then    
+            grp8 <= "000";
+        end if;
+
+
+        -- Group 9
+        if(microinst(1 downto 0) = "00") then   
+            grp9 <= "01";
+            mem_read <= '1';
+        end if;
+        if(microinst(1 downto 0) = "01") then    
+            grp9 <= "10";
+            mem_write <= '1';
+        end if;
+        if(microinst(1 downto 0) = "10") then    
+            grp9 <= "00";
+        end if;
+
+
+    end process;
+end architecture ROMDecoderWorkFlow;

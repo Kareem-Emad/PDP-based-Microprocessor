@@ -18,6 +18,6 @@ begin
 
 	newMPC <= mPC;
 	--newMPC(1) <= mPC(1) or bitOringBit;
-	newMPC(1) <= (mPC(1) or IR(8)) when mPC(6) = '1'
+	newMPC(1) <= (newMPC(1) or IR(8)) when mPC(6) = '1'
 	else (mPC(1) or IR(2));
 end architecture BitOringWorkFlow;
